@@ -1,11 +1,12 @@
-// Uncomment this block to pass the first stage
+mod datatypes;
+mod storage;
+
 use std::{
     io::{Read, Write},
     net::{TcpListener, TcpStream},
 };
-mod datatypes;
-use datatypes::DataType;
 
+use storage::Storage;
 
 #[tokio::main]
 async fn main() {
@@ -29,7 +30,9 @@ async fn main() {
 
 fn handle_stream(mut stream: TcpStream){
     let mut buf = [0; 512];
+
     let PING = String::from("PING");
+
     while let Ok(r) = stream.read(&mut buf){
         match buffer_to_string(&buf) {
             PING => {stream.write(b"+PONG\r\n").unwrap();},
@@ -38,6 +41,14 @@ fn handle_stream(mut stream: TcpStream){
     };
 
 }
+
+
+
+
+
+
+
+
 
 pub fn buffer_to_string(buffer: &[u8; 512]) -> String {
     // Find the first null byte (0)
