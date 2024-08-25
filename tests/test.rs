@@ -4,6 +4,8 @@ use std::{
     fs,
     str};
 
+
+
 #[test]
 fn test_server() {
     let mut connection = TcpStream::connect("127.0.0.1:6379").unwrap();

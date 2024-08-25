@@ -3,7 +3,8 @@ use std::{
     io::{Read, Write},
     net::{TcpListener, TcpStream},
 };
-
+mod datatypes;
+use datatypes::DataType;
 
 
 #[tokio::main]
@@ -38,7 +39,7 @@ fn handle_stream(mut stream: TcpStream){
 
 }
 
-fn buffer_to_string(buffer: &[u8; 512]) -> String {
+pub fn buffer_to_string(buffer: &[u8; 512]) -> String {
     // Find the first null byte (0)
     let len = buffer.iter().position(|&x| x == 0).unwrap_or(buffer.len());
 
