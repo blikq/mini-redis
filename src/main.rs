@@ -30,21 +30,37 @@ async fn main() {
 
 fn handle_stream(mut stream: TcpStream){
     let mut buf = [0; 512];
+    
 
-    let PING = String::from("PING");
-
+    
+    let PING: String = String::from("PING");
+    let SET: String = String::from("SET");
     while let Ok(r) = stream.read(&mut buf){
-        match buffer_to_string(&buf) {
+        let cleaned_com = String::from_utf8_lossy(&buf[0..r]).to_string();
+        match  cleaned_com {
             PING => {stream.write(b"+PONG\r\n").unwrap();},
+            SET => {println!("at set")},
             _ => unimplemented!(),
         };
     };
 
 }
 
+fn main_data() {
+    let data = Storage::new();
+}
 
-
-
+fn parsing() {
+    /*
+    commands
+    GET <key>
+    SET <key> <value>
+    DELETE <key>
+    FLUSH
+    MGET <key1> ... <keyn>
+    MSET <key1> <value1> ... <keyn> <valuen>
+    */
+}
 
 
 
