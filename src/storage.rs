@@ -24,4 +24,8 @@ impl Storage {
         self.vault.insert(key, value);
         Ok(())
     }
+
+    pub fn get(&mut self, key: [u8; 512]) -> Result<(), Error> {
+        Ok(self.vault.get(&key))
+    }
 }

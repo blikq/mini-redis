@@ -1,12 +1,18 @@
 mod datatypes;
 mod storage;
+mod collections;
 
 use std::{
     io::{Read, Write},
     net::{TcpListener, TcpStream},
+    fs::{File},
 };
 
 use storage::Storage;
+
+use crate::collections::Storage::HashMap as HashMap;
+
+
 
 #[tokio::main]
 async fn main() {
@@ -30,8 +36,8 @@ async fn main() {
 
 fn handle_stream(mut stream: TcpStream){
     let mut buf = [0; 512];
-    
-
+    let mut vault = File::open("dbmini.json").unwrap();
+    let mut data = Storage::new();
     
     let PING: String = String::from("PING");
     let SET: String = String::from("SET");
@@ -40,14 +46,11 @@ fn handle_stream(mut stream: TcpStream){
         match  cleaned_com {
             PING => {stream.write(b"+PONG\r\n").unwrap();},
             SET => {println!("at set")},
+            GET => {}
             _ => unimplemented!(),
         };
     };
 
-}
-
-fn main_data() {
-    let data = Storage::new();
 }
 
 fn parsing() {
@@ -60,24 +63,4 @@ fn parsing() {
     MGET <key1> ... <keyn>
     MSET <key1> <value1> ... <keyn> <valuen>
     */
-}
-
-
-
-
-
-pub fn buffer_to_string(buffer: &[u8; 512]) -> String {
-    // Find the first null byte (0)
-    let len = buffer.iter().position(|&x| x == 0).unwrap_or(buffer.len());
-
-    // Convert the non-null part of the buffer to a &str
-    let valid_slice = &buffer[..len];
-
-    // Convert the slice to a String
-    String::from_utf8_lossy(valid_slice).to_string()
-}
-
-
-fn start(){
-
 }
